@@ -4,17 +4,19 @@ ESP32-based presence detection using the LD2410C mmWave radar sensor. Integrates
 
 ## Hardware
 
-- ESP32 Dev Module
+- ESP32 NodeMCU Dev Board v1.1 (or compatible ESP32)
 - LD2410C mmWave presence sensor
 
 ### Wiring
 
 | ESP32 | LD2410C |
 |-------|---------|
-| GPIO17 (TX) | RX |
-| GPIO16 (RX) | TX |
-| 3.3V | VCC |
+| GPIO18 (TX) | RX |
+| GPIO19 (RX) | TX |
+| 5V | VCC |
 | GND | GND |
+
+> **Note:** GPIO16/17 didn't work on NodeMCU ESP32 Dev Board v1.1. GPIO18/19 are reliable UART pins. Use 5V for stable operation.
 
 ## Setup
 

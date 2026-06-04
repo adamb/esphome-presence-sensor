@@ -14,9 +14,12 @@ This is an **ESPHome presence sensor project** for an ESP32-based device. It use
 
 ## Hardware
 
-- **Board**: ESP32 Dev Module
+- **Board**: ESP32 NodeMCU Dev Board v1.1 (or compatible ESP32)
 - **Sensor**: LD2410C mmWave presence sensor
-- **UART Wiring**: GPIO17 (TX) → LD2410C RX, GPIO16 (RX) → LD2410C TX
+- **UART Wiring**: GPIO18 (TX) → LD2410C RX, GPIO19 (RX) → LD2410C TX
+- **Power**: 5V to LD2410C VCC (not 3.3V)
+
+> **Note:** GPIO16/17 didn't work on this board. GPIO18/19 are reliable UART pins.
 
 ## Sensors Exposed
 

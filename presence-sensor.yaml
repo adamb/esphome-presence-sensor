@@ -31,11 +31,11 @@ captive_portal:
 
 web_server:
 
-# LD2410C presence sensor (UART2: GPIO17=TX, GPIO16=RX)
+# LD2410C presence sensor (UART on safe GPIO pins)
 uart:
   - id: uart_bus
-    tx_pin: GPIO17
-    rx_pin: GPIO16
+    tx_pin: GPIO18
+    rx_pin: GPIO19
     baud_rate: 256000
     parity: NONE
     stop_bits: 1

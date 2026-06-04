@@ -4,81 +4,65 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an **ESPHome** project for an ESP32-based device named "office". ESPHome is a framework for building smart home devices that integrate with Home Assistant. The project uses the ESP-IDF framework and communicates via the Home Assistant API with OTA (Over-The-Air) update support.
+This is an **ESPHome presence sensor project** for an ESP32-based device. It uses an LD2410C mmWave radar sensor to detect human presence (both moving and stationary) and integrates with Home Assistant.
 
-## Key Files & Configuration
+## Key Files
 
-- **`first.yaml`** - Main ESPHome device configuration. Defines the device name ("office"), board type (ESP32), WiFi settings, Home Assistant API encryption, and enabled features (logging, OTA, captive portal).
-- **`.esphome/`** - ESPHome build directory (auto-generated, can be deleted and rebuilt).
+- **`presence-sensor.yaml`** - Main ESPHome device configuration with LD2410C sensor setup
+- **`secrets.yaml`** - WiFi credentials and API encryption key (not tracked in git)
+- **`.esphome/`** - ESPHome build directory (auto-generated, safe to delete and rebuild)
+
+## Hardware
+
+- **Board**: ESP32 Dev Module
+- **Sensor**: LD2410C mmWave presence sensor
+- **UART Wiring**: GPIO17 (TX) → LD2410C RX, GPIO16 (RX) → LD2410C TX
+
+## Sensors Exposed
+
+| Sensor | Type | Description |
+|--------|------|-------------|
+| Presence detected | binary_sensor | True when any presence detected |
+| Moving target | binary_sensor | True when moving target detected |
+| Still target | binary_sensor | True when stationary target detected |
+| Moving distance | sensor | Distance to moving target (cm) |
+| Still distance | sensor | Distance to stationary target (cm) |
+| Moving energy | sensor | Signal strength for moving target |
+| Still energy | sensor | Signal strength for stationary target |
+| Detection distance | sensor | Overall detection distance |
 
 ## Common Commands
 
-### Validate Configuration
 ```bash
-esphome config first.yaml
-```
-Validates the YAML configuration without building.
+# Validate configuration
+esphome config presence-sensor.yaml
 
-### Build Firmware
-```bash
-esphome compile first.yaml
-```
-Compiles the firmware. Output is in `.esphome/build/office/`.
+# Build firmware
+esphome compile presence-sensor.yaml
 
-### Flash Device (USB)
-```bash
-esphome run first.yaml
-```
-Builds and flashes the device over USB. Interactive—follow prompts to select the serial port.
+# Flash via USB (first time)
+esphome run presence-sensor.yaml
 
-### Upload Over-The-Air (OTA)
-```bash
-esphome upload first.yaml
-```
-Uploads firmware to the device over WiFi (requires device to be running and connected).
+# Upload OTA (subsequent updates)
+esphome upload presence-sensor.yaml
 
-### Monitor Serial Output
-```bash
-esphome logs first.yaml
-```
-Opens a serial monitor to view device logs in real-time.
+# Monitor serial logs
+esphome logs presence-sensor.yaml
 
-### Clean Build
-```bash
+# Clean build
 rm -rf .esphome/build
 ```
-Then run `esphome compile first.yaml` to rebuild from scratch.
-
-## ESPHome Configuration Syntax
-
-The YAML files use ESPHome's domain-specific configuration language. Key sections in the current config:
-
-- **`esphome:`** - Device metadata (name, etc.)
-- **`esp32:`** - Board configuration (board type, framework)
-- **`logger:`** - Enable serial logging
-- **`api:`** - Home Assistant API integration with encryption
-- **`ota:`** - Over-The-Air update platform
-- **`wifi:`** - WiFi credentials and fallback hotspot
-- **`captive_portal:`** - Fallback web portal if WiFi fails
-
-## Architecture Notes
-
-- **No custom components**: Currently using only built-in ESPHome components.
-- **Single device config**: The project has one device configuration file. If adding multiple devices in the future, create separate YAML files per device (e.g., `living_room.yaml`, `bedroom.yaml`).
-- **Home Assistant integration**: The device integrates via the native API. Ensure the Home Assistant instance has the correct encryption key to pair with the device.
 
 ## Development Workflow
 
-1. **Edit** `first.yaml` to add sensors, switches, or other components.
-2. **Validate** with `esphome config first.yaml` to catch syntax errors early.
-3. **Build** locally: `esphome compile first.yaml` to verify compilation.
-4. **Deploy**:
-   - First time: `esphome run first.yaml` (USB) to flash initial firmware.
-   - Subsequent updates: `esphome upload first.yaml` (OTA) or `esphome run first.yaml` (USB).
-5. **Monitor** with `esphome logs first.yaml` to debug issues.
+1. Edit `presence-sensor.yaml` to modify sensors, thresholds, or add components
+2. Validate: `esphome config presence-sensor.yaml`
+3. Build: `esphome compile presence-sensor.yaml`
+4. Deploy: `esphome run presence-sensor.yaml` (USB) or `esphome upload presence-sensor.yaml` (OTA)
+5. Monitor: `esphome logs presence-sensor.yaml`
 
 ## Useful References
 
-- [ESPHome Documentation](https://esphome.io/) - Full component and configuration reference
-- [Home Assistant Integration](https://esphome.io/components/api.html) - Details on the API component
-- [ESP-IDF Framework](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/) - Low-level framework documentation
+- [LD2410 Component Docs](https://esphome.io/components/sensor/ld2410.html)
+- [ESPHome Documentation](https://esphome.io/)
+- [Home Assistant API Integration](https://esphome.io/components/api.html)

@@ -43,6 +43,17 @@ uart:
 ld2410:
   uart_id: uart_bus
 
+# Runtime configuration entities for HA
+switch:
+  - platform: ld2410
+    engineering_mode:
+      name: "Engineering mode"
+
+button:
+  - platform: ld2410
+    factory_reset:
+      name: "Factory reset"
+
 binary_sensor:
   - platform: ld2410
     has_target:

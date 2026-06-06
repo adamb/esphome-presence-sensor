@@ -4,7 +4,7 @@ esphome:
 esp32:
   board: esp32dev
   framework:
-    type: arduino
+    type: esp-idf   # recommended for bluetooth_proxy (better BLE memory/stability)
 
 # Enable logging
 logger:
@@ -29,7 +29,16 @@ wifi:
 
 captive_portal:
 
-web_server:
+# --- Bluetooth proxy ---------------------------------------------------------
+# Active scanning + active connections so the standalone BLE LD2410
+# ("Mini Motion", ld2410_ble integration) can connect through this in-room ESP32.
+esp32_ble_tracker:
+  scan_parameters:
+    active: true
+
+bluetooth_proxy:
+  active: true
+# -----------------------------------------------------------------------------
 
 # LD2410C presence sensor (UART on safe GPIO pins)
 uart:

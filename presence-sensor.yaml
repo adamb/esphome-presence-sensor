@@ -141,8 +141,10 @@ number:
     max_still_distance_gate:
       name: "Max still distance gate"
     # Seconds of no presence before sensor clears (reduces false "still" detections)
-    absence_timeout:
+    timeout:
       name: "Absence timeout"
+
+  - platform: ld2410
     # Per-gate sensitivity thresholds (0–100; lower = more sensitive)
     g0:
       move_threshold:
